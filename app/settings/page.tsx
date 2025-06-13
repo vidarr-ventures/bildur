@@ -1,15 +1,9 @@
-import type { Metadata } from "next"
 import { Suspense } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { SettingsForm } from "@/components/settings/settings-form"
-import { NotificationsForm } from "@/components/settings/notifications-form"
-import { SecurityForm } from "@/components/settings/security-form"
-
-export const metadata: Metadata = {
-  title: "Settings | Bildur",
-  description: "Manage your account settings",
-}
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 function SettingsContent() {
   return (
@@ -41,8 +35,16 @@ function SettingsContent() {
                   <CardTitle>General Settings</CardTitle>
                   <CardDescription className="text-gray-400">Manage your account information</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <SettingsForm />
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input id="name" placeholder="Your name" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input id="email" type="email" placeholder="your@email.com" />
+                  </div>
+                  <Button>Save Changes</Button>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -55,7 +57,7 @@ function SettingsContent() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <NotificationsForm />
+                  <p className="text-gray-400">Notification settings coming soon...</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -66,7 +68,7 @@ function SettingsContent() {
                   <CardDescription className="text-gray-400">Manage your account security</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <SecurityForm />
+                  <p className="text-gray-400">Security settings coming soon...</p>
                 </CardContent>
               </Card>
             </TabsContent>
