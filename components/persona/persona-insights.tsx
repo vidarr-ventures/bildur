@@ -8,9 +8,9 @@ export default function PersonaInsights() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Persona Insights</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Advanced Persona Analytics</h2>
             <p className="max-w-[900px] text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Gain deeper understanding of your customer personas with advanced analytics
+              Get deep insights into your customer personas with comprehensive analytics and visualizations
             </p>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default function PersonaInsights() {
                   <Card className="border-gray-800 bg-gray-900">
                     <CardHeader className="pb-2">
                       <CardTitle>Persona Distribution</CardTitle>
-                      <CardDescription className="text-gray-400">Breakdown of your customer base</CardDescription>
+                      <CardDescription className="text-gray-400">Breakdown of your customer segments</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <PieChart />
@@ -54,7 +54,7 @@ export default function PersonaInsights() {
                   <Card className="border-gray-800 bg-gray-900">
                     <CardHeader className="pb-2">
                       <CardTitle>Psychological Profile</CardTitle>
-                      <CardDescription className="text-gray-400">Key psychological traits</CardDescription>
+                      <CardDescription className="text-gray-400">Key psychological traits analysis</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <RadarChart />
@@ -67,12 +67,38 @@ export default function PersonaInsights() {
                   <CardHeader>
                     <CardTitle>Psychological Analysis</CardTitle>
                     <CardDescription className="text-gray-400">
-                      Deep dive into the psychological traits of your personas
+                      Deep dive into the psychological traits and motivations of your personas
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-[400px] flex items-center justify-center text-gray-400">
-                      Select a persona to view detailed psychological analysis
+                    <div className="space-y-6">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-purple-400">Cognitive Style</h4>
+                          <p className="text-sm text-gray-400">
+                            Analytical thinkers who prefer data-driven decisions and systematic approaches to
+                            problem-solving.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-purple-400">Risk Tolerance</h4>
+                          <p className="text-sm text-gray-400">
+                            Moderate risk tolerance with preference for proven solutions and gradual implementation.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-purple-400">Communication Style</h4>
+                          <p className="text-sm text-gray-400">
+                            Direct, professional communication with emphasis on facts, benefits, and ROI.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-purple-400">Decision Factors</h4>
+                          <p className="text-sm text-gray-400">
+                            Values efficiency, cost-effectiveness, and measurable outcomes when making decisions.
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -82,12 +108,39 @@ export default function PersonaInsights() {
                   <CardHeader>
                     <CardTitle>Behavioral Patterns</CardTitle>
                     <CardDescription className="text-gray-400">
-                      Understand how your personas behave and make decisions
+                      Understanding how your personas behave and make purchasing decisions
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-[400px] flex items-center justify-center text-gray-400">
-                      Select a persona to view detailed behavioral analysis
+                    <div className="space-y-6">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-blue-400">Research Behavior</h4>
+                          <p className="text-sm text-gray-400">
+                            Conducts thorough research before making decisions, comparing multiple options and reading
+                            reviews.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-blue-400">Purchase Triggers</h4>
+                          <p className="text-sm text-gray-400">
+                            Motivated by efficiency gains, cost savings, and solutions that solve specific pain points.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-blue-400">Content Preferences</h4>
+                          <p className="text-sm text-gray-400">
+                            Prefers detailed case studies, whitepapers, and data-driven content over emotional appeals.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-blue-400">Channel Preferences</h4>
+                          <p className="text-sm text-gray-400">
+                            Active on LinkedIn, industry publications, and professional networks for information
+                            gathering.
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -95,14 +148,51 @@ export default function PersonaInsights() {
               <TabsContent value="journey" className="m-0">
                 <Card className="border-gray-800 bg-gray-900">
                   <CardHeader>
-                    <CardTitle>Customer Journey</CardTitle>
+                    <CardTitle>Customer Journey Mapping</CardTitle>
                     <CardDescription className="text-gray-400">
-                      Map the journey of your personas from awareness to purchase
+                      Detailed journey from awareness to purchase and beyond
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-[400px] flex items-center justify-center text-gray-400">
-                      Select a persona to view detailed journey map
+                    <div className="space-y-6">
+                      <div className="grid gap-6">
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-sm font-semibold">
+                              1
+                            </div>
+                            <h4 className="font-semibold text-purple-400">Awareness Stage</h4>
+                          </div>
+                          <p className="text-sm text-gray-400 ml-11">
+                            Discovers problem through industry reports, peer discussions, or performance metrics. Begins
+                            researching solutions.
+                          </p>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-sm font-semibold">
+                              2
+                            </div>
+                            <h4 className="font-semibold text-blue-400">Consideration Stage</h4>
+                          </div>
+                          <p className="text-sm text-gray-400 ml-11">
+                            Evaluates multiple vendors, requests demos, and compares features. Involves team members in
+                            decision process.
+                          </p>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-sm font-semibold">
+                              3
+                            </div>
+                            <h4 className="font-semibold text-green-400">Decision Stage</h4>
+                          </div>
+                          <p className="text-sm text-gray-400 ml-11">
+                            Negotiates terms, seeks approval from stakeholders, and finalizes purchase based on ROI
+                            projections.
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
