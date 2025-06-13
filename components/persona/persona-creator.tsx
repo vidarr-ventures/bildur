@@ -12,13 +12,24 @@ import { Slider } from "@/components/ui/slider"
 
 export default function PersonaCreator() {
   const [isGenerating, setIsGenerating] = useState(false)
+  const [currentTab, setCurrentTab] = useState("basic")
 
   const handleGenerate = () => {
     setIsGenerating(true)
-    // Simulate API call to your backend
+    // Simulate persona generation
     setTimeout(() => {
       setIsGenerating(false)
-    }, 2000)
+      // Show success message or generated persona
+      alert("Persona generated successfully! Contact us to access the full analysis and export features.")
+    }, 3000)
+  }
+
+  const handleNext = (nextTab: string) => {
+    setCurrentTab(nextTab)
+  }
+
+  const handleBack = (prevTab: string) => {
+    setCurrentTab(prevTab)
   }
 
   return (
@@ -28,12 +39,12 @@ export default function PersonaCreator() {
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Create Your Customer Persona</h2>
             <p className="max-w-[900px] text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Input your customer data and let our AI generate a comprehensive psychological profile
+              Input your customer data and generate a comprehensive psychological profile
             </p>
           </div>
         </div>
         <div className="mx-auto max-w-5xl py-12">
-          <Tabs defaultValue="basic" className="w-full">
+          <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
             <TabsList className="grid w-full grid-cols-3 bg-gray-800">
               <TabsTrigger value="basic" className="data-[state=active]:bg-gray-700">
                 Basic Info
@@ -136,7 +147,7 @@ export default function PersonaCreator() {
                   <Button variant="outline" className="border-gray-700 bg-gray-800 hover:bg-gray-700 hover:text-white">
                     Clear
                   </Button>
-                  <Button>Next</Button>
+                  <Button onClick={() => handleNext("behaviors")}>Next</Button>
                 </CardFooter>
               </TabsContent>
               <TabsContent value="behaviors" className="m-0">
@@ -186,10 +197,14 @@ export default function PersonaCreator() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between border-t border-gray-800 bg-gray-900">
-                  <Button variant="outline" className="border-gray-700 bg-gray-800 hover:bg-gray-700 hover:text-white">
+                  <Button
+                    variant="outline"
+                    className="border-gray-700 bg-gray-800 hover:bg-gray-700 hover:text-white"
+                    onClick={() => handleBack("basic")}
+                  >
                     Back
                   </Button>
-                  <Button>Next</Button>
+                  <Button onClick={() => handleNext("psychology")}>Next</Button>
                 </CardFooter>
               </TabsContent>
               <TabsContent value="psychology" className="m-0">
@@ -245,11 +260,15 @@ export default function PersonaCreator() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between border-t border-gray-800 bg-gray-900">
-                  <Button variant="outline" className="border-gray-700 bg-gray-800 hover:bg-gray-700 hover:text-white">
+                  <Button
+                    variant="outline"
+                    className="border-gray-700 bg-gray-800 hover:bg-gray-700 hover:text-white"
+                    onClick={() => handleBack("behaviors")}
+                  >
                     Back
                   </Button>
                   <Button onClick={handleGenerate} disabled={isGenerating}>
-                    {isGenerating ? "Generating..." : "Generate Persona"}
+                    {isGenerating ? "Generating Persona..." : "Generate Persona"}
                   </Button>
                 </CardFooter>
               </TabsContent>
