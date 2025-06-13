@@ -1,24 +1,43 @@
-export default function Persona() {
+import type { Metadata } from "next"
+import { Suspense } from "react"
+import Hero from "@/components/persona/hero"
+import PersonaCreator from "@/components/persona/persona-creator"
+import PersonaInsights from "@/components/persona/persona-insights"
+import FeatureHighlights from "@/components/persona/feature-highlights"
+import Testimonials from "@/components/persona/testimonials"
+import CallToAction from "@/components/persona/call-to-action"
+
+export const metadata: Metadata = {
+  title: "Customer Persona Generator | Bildur",
+  description:
+    "Create comprehensive psychological customer personas to better understand and target your ideal customers.",
+}
+
+function PersonaContent() {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-          Customer Persona Builder
-        </h1>
-        <div className="rounded-lg border border-gray-800 bg-gray-900 p-8">
-          <p className="text-xl text-gray-300 mb-6">Create detailed psychological profiles of your ideal customers.</p>
-          <p className="text-gray-400 mb-8">
-            Our Persona Builder tool is currently in development. It will help you understand your customers'
-            motivations, pain points, and decision-making processes to create more effective marketing campaigns.
-          </p>
-          <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-purple-400 mb-2">Coming Soon</h3>
-            <p className="text-gray-300">
-              The Customer Persona Builder will be available soon. Sign up for updates to be notified when it launches.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="flex flex-col min-h-screen">
+      <Hero />
+      <main className="flex-1">
+        <PersonaCreator />
+        <PersonaInsights />
+        <FeatureHighlights />
+        <Testimonials />
+        <CallToAction />
+      </main>
     </div>
+  )
+}
+
+export default function PersonaPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-black flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+        </div>
+      }
+    >
+      <PersonaContent />
+    </Suspense>
   )
 }
