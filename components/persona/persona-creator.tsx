@@ -1,279 +1,85 @@
 "use client"
-
-import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Slider } from "@/components/ui/slider"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 export default function PersonaCreator() {
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [currentTab, setCurrentTab] = useState("basic")
-
-  const handleGenerate = () => {
-    setIsGenerating(true)
-    // Simulate persona generation
-    setTimeout(() => {
-      setIsGenerating(false)
-      // Show success message or generated persona
-      alert("Persona generated successfully! Contact us to access the full analysis and export features.")
-    }, 3000)
-  }
-
-  const handleNext = (nextTab: string) => {
-    setCurrentTab(nextTab)
-  }
-
-  const handleBack = (prevTab: string) => {
-    setCurrentTab(prevTab)
-  }
-
   return (
-    <section id="persona-creator" className="w-full py-12 md:py-24 lg:py-32 bg-black">
+    <section id="persona-creator" className="w-full py-12 md:py-24 lg:py-32 bg-gray-900">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Create Your Customer Persona</h2>
-            <p className="max-w-[900px] text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Input your customer data and generate a comprehensive psychological profile
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">Interactive Persona Builder</h2>
+            <p className="max-w-[900px] text-gray-200 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              Our advanced persona builder uses psychological frameworks to create comprehensive customer profiles
             </p>
           </div>
         </div>
-        <div className="mx-auto max-w-5xl py-12">
-          <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-gray-800">
-              <TabsTrigger value="basic" className="data-[state=active]:bg-gray-700">
-                Basic Info
-              </TabsTrigger>
-              <TabsTrigger value="behaviors" className="data-[state=active]:bg-gray-700">
-                Behaviors
-              </TabsTrigger>
-              <TabsTrigger value="psychology" className="data-[state=active]:bg-gray-700">
-                Psychology
-              </TabsTrigger>
-            </TabsList>
-            <Card className="mt-6 border-gray-800 bg-gray-900 shadow-lg">
-              <TabsContent value="basic" className="m-0">
-                <CardHeader>
-                  <CardTitle>Basic Information</CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Enter the fundamental details about your customer persona.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="persona-name">Persona Name</Label>
-                      <Input
-                        id="persona-name"
-                        placeholder="e.g., Marketing Manager Melissa"
-                        className="bg-gray-800 border-gray-700"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="industry">Industry</Label>
-                      <Select>
-                        <SelectTrigger id="industry" className="bg-gray-800 border-gray-700">
-                          <SelectValue placeholder="Select industry" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="saas">SaaS</SelectItem>
-                          <SelectItem value="ecommerce">E-commerce</SelectItem>
-                          <SelectItem value="healthcare">Healthcare</SelectItem>
-                          <SelectItem value="finance">Finance</SelectItem>
-                          <SelectItem value="education">Education</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="age-range">Age Range</Label>
-                      <Select>
-                        <SelectTrigger id="age-range" className="bg-gray-800 border-gray-700">
-                          <SelectValue placeholder="Select age range" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="18-24">18-24</SelectItem>
-                          <SelectItem value="25-34">25-34</SelectItem>
-                          <SelectItem value="35-44">35-44</SelectItem>
-                          <SelectItem value="45-54">45-54</SelectItem>
-                          <SelectItem value="55-64">55-64</SelectItem>
-                          <SelectItem value="65+">65+</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="role">Role/Position</Label>
-                      <Input id="role" placeholder="e.g., Marketing Manager" className="bg-gray-800 border-gray-700" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="company-size">Company Size</Label>
-                      <Select>
-                        <SelectTrigger id="company-size" className="bg-gray-800 border-gray-700">
-                          <SelectValue placeholder="Select company size" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="1-10">1-10 employees</SelectItem>
-                          <SelectItem value="11-50">11-50 employees</SelectItem>
-                          <SelectItem value="51-200">51-200 employees</SelectItem>
-                          <SelectItem value="201-500">201-500 employees</SelectItem>
-                          <SelectItem value="501-1000">501-1000 employees</SelectItem>
-                          <SelectItem value="1000+">1000+ employees</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="decision-making">Decision Making Power</Label>
-                      <Select>
-                        <SelectTrigger id="decision-making" className="bg-gray-800 border-gray-700">
-                          <SelectValue placeholder="Select decision making power" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="sole-decision-maker">Sole Decision Maker</SelectItem>
-                          <SelectItem value="key-influencer">Key Influencer</SelectItem>
-                          <SelectItem value="part-of-committee">Part of Committee</SelectItem>
-                          <SelectItem value="recommender">Recommender</SelectItem>
-                          <SelectItem value="no-influence">No Influence</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between border-t border-gray-800 bg-gray-900">
-                  <Button variant="outline" className="border-gray-700 bg-gray-800 hover:bg-gray-700 hover:text-white">
-                    Clear
-                  </Button>
-                  <Button onClick={() => handleNext("behaviors")}>Next</Button>
-                </CardFooter>
-              </TabsContent>
-              <TabsContent value="behaviors" className="m-0">
-                <CardHeader>
-                  <CardTitle>Behaviors & Preferences</CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Describe how your persona behaves and what they prefer.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="goals">Goals & Objectives</Label>
-                      <Textarea
-                        id="goals"
-                        placeholder="What are they trying to achieve?"
-                        className="bg-gray-800 border-gray-700"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="pain-points">Pain Points & Challenges</Label>
-                      <Textarea
-                        id="pain-points"
-                        placeholder="What problems are they facing?"
-                        className="bg-gray-800 border-gray-700"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="information-sources">Information Sources</Label>
-                      <Textarea
-                        id="information-sources"
-                        placeholder="Where do they get their information? (blogs, social media, etc.)"
-                        className="bg-gray-800 border-gray-700"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Tech Savviness</Label>
-                      <div className="pt-2">
-                        <Slider defaultValue={[50]} max={100} step={1} />
-                        <div className="flex justify-between mt-2 text-xs text-gray-400">
-                          <span>Beginner</span>
-                          <span>Intermediate</span>
-                          <span>Expert</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between border-t border-gray-800 bg-gray-900">
-                  <Button
-                    variant="outline"
-                    className="border-gray-700 bg-gray-800 hover:bg-gray-700 hover:text-white"
-                    onClick={() => handleBack("basic")}
-                  >
-                    Back
-                  </Button>
-                  <Button onClick={() => handleNext("psychology")}>Next</Button>
-                </CardFooter>
-              </TabsContent>
-              <TabsContent value="psychology" className="m-0">
-                <CardHeader>
-                  <CardTitle>Psychological Profile</CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Define the psychological characteristics of your persona.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Analytical vs. Intuitive</Label>
-                      <div className="pt-2">
-                        <Slider defaultValue={[50]} max={100} step={1} />
-                        <div className="flex justify-between mt-2 text-xs text-gray-400">
-                          <span>Analytical</span>
-                          <span>Balanced</span>
-                          <span>Intuitive</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Risk Averse vs. Risk Taking</Label>
-                      <div className="pt-2">
-                        <Slider defaultValue={[50]} max={100} step={1} />
-                        <div className="flex justify-between mt-2 text-xs text-gray-400">
-                          <span>Risk Averse</span>
-                          <span>Balanced</span>
-                          <span>Risk Taking</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Detail-Oriented vs. Big Picture</Label>
-                      <div className="pt-2">
-                        <Slider defaultValue={[50]} max={100} step={1} />
-                        <div className="flex justify-between mt-2 text-xs text-gray-400">
-                          <span>Detail-Oriented</span>
-                          <span>Balanced</span>
-                          <span>Big Picture</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="keywords">Key Psychological Traits</Label>
-                      <Textarea
-                        id="keywords"
-                        placeholder="Enter 3 separate keywords that describe this persona's psychology (e.g., analytical, cautious, collaborative)"
-                        className="bg-gray-800 border-gray-700"
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between border-t border-gray-800 bg-gray-900">
-                  <Button
-                    variant="outline"
-                    className="border-gray-700 bg-gray-800 hover:bg-gray-700 hover:text-white"
-                    onClick={() => handleBack("behaviors")}
-                  >
-                    Back
-                  </Button>
-                  <Button onClick={handleGenerate} disabled={isGenerating}>
-                    {isGenerating ? "Generating Persona..." : "Generate Persona"}
-                  </Button>
-                </CardFooter>
-              </TabsContent>
+        <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+          <div className="flex flex-col justify-center space-y-4">
+            <div className="space-y-2">
+              <h3 className="text-2xl font-bold text-white">Professional Persona Creation</h3>
+              <p className="text-gray-200">
+                Build detailed customer personas with our comprehensive questionnaire system. Analyze demographics,
+                psychographics, pain points, and behavioral patterns.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary" className="bg-purple-900/50 text-purple-200 border-purple-700">
+                Psychological Profiling
+              </Badge>
+              <Badge variant="secondary" className="bg-blue-900/50 text-blue-200 border-blue-700">
+                Behavioral Analysis
+              </Badge>
+              <Badge variant="secondary" className="bg-green-900/50 text-green-200 border-green-700">
+                Market Segmentation
+              </Badge>
+              <Badge variant="secondary" className="bg-orange-900/50 text-orange-200 border-orange-700">
+                Export & Share
+              </Badge>
+            </div>
+            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+              <Button size="lg" asChild>
+                <Link href="https://persona-2411j1010-vidarr-ventures-42e9986b.vercel.app" target="_blank">
+                  Launch Builder
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" className="border-gray-600 text-gray-200 hover:bg-gray-800" asChild>
+                <Link href="mailto:ben@vidarrventures.com">Get Enterprise Access</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <Card className="w-full max-w-md border-gray-800 bg-gray-900">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                  Live Persona Builder
+                </CardTitle>
+                <CardDescription className="text-gray-300">
+                  Click "Launch Builder" to access the full application
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-white">Features Available:</h4>
+                  <ul className="space-y-1 text-sm text-gray-200">
+                    <li>• Multi-step persona creation</li>
+                    <li>• Psychological assessment tools</li>
+                    <li>• Visual persona cards</li>
+                    <li>• Export and sharing options</li>
+                    <li>• Team collaboration</li>
+                  </ul>
+                </div>
+                <Button className="w-full" asChild>
+                  <Link href="https://persona-2411j1010-vidarr-ventures-42e9986b.vercel.app" target="_blank">
+                    Access Full Builder →
+                  </Link>
+                </Button>
+              </CardContent>
             </Card>
-          </Tabs>
+          </div>
         </div>
       </div>
     </section>
