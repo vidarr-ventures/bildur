@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -7,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Progress } from "@/components/ui/progress"
-import { ArrowLeft, ArrowRight, User, Building, Brain, Target } from 'lucide-react'
+import { ArrowLeft, ArrowRight, User, Building, Brain, Target } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 interface FormData {
@@ -52,16 +53,16 @@ export default function PersonaBuilderApp() {
   const router = useRouter()
 
   useEffect(() => {
-    // Check authentication - for demo purposes, we'll create a mock user
+    // Check authentication
     const authState = localStorage.getItem("demo-auth")
     const userData = localStorage.getItem("demo-user")
 
     if (!authState || authState !== "true") {
-      // For demo purposes, auto-authenticate
-      localStorage.setItem("demo-auth", "true")
-      localStorage.setItem("demo-user", JSON.stringify({ name: "Demo User", email: "demo@example.com" }))
-      setUser({ name: "Demo User", email: "demo@example.com" })
-    } else if (userData) {
+      router.push("/persona#signup")
+      return
+    }
+
+    if (userData) {
       setUser(JSON.parse(userData))
     }
   }, [router])
@@ -85,13 +86,8 @@ export default function PersonaBuilderApp() {
   const handleSubmit = () => {
     // Handle persona creation
     console.log("Creating persona:", formData)
-    // Save to localStorage for demo
-    const personas = JSON.parse(localStorage.getItem("demo-personas") || "[]")
-    personas.push({ ...formData, id: Date.now(), createdAt: new Date().toISOString() })
-    localStorage.setItem("demo-personas", JSON.stringify(personas))
-    
+    // You could save to localStorage, send to API, etc.
     alert("Persona created successfully! (This is a demo)")
-    router.push("/persona")
   }
 
   const getStepIcon = (step: number) => {
@@ -456,4 +452,61 @@ export default function PersonaBuilderApp() {
                       <span className="text-white ml-2">{formData.ageRange || "Not specified"}</span>
                     </div>
                     <div>
-                      <span className="
+                      <span className="text-gray-400">Role:</span>
+                      <span className="text-white ml-2">{formData.role || "Not specified"}</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-400">Company Size:</span>
+                      <span className="text-white ml-2">{formData.companySize || "Not specified"}</span>
+                    </div>
+                  </div>
+                  {formData.goals && (
+                    <div>
+                      <h4 className="text-purple-300 font-semibold mb-2">Goals:</h4>
+                      <p className="text-gray-200 text-sm">{formData.goals}</p>
+                    </div>
+                  )}
+                  {formData.painPoints && (
+                    <div>
+                      <h4 className="text-purple-300 font-semibold mb-2">Pain Points:</h4>
+                      <p className="text-gray-200 text-sm">{formData.painPoints}</p>
+                    </div>
+                  )}
+                  {formData.keywords && (
+                    <div>
+                      <h4 className="text-purple-300 font-semibold mb-2">Psychological Traits:</h4>
+                      <p className="text-gray-200 text-sm">{formData.keywords}</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </>
+          )}
+
+          {/* Navigation */}
+          <div className="flex justify-between p-6 border-t border-gray-800">
+            <Button
+              variant="outline"
+              onClick={prevStep}
+              disabled={currentStep === 1}
+              className="border-gray-700 text-gray-300 hover:bg-gray-800"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Previous
+            </Button>
+            {currentStep < 4 ? (
+              <Button onClick={nextStep} className="bg-purple-600 hover:bg-purple-700">
+                Next
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            ) : (
+              <Button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700">
+                Create Persona
+              </Button>
+            )}
+          </div>
+        </Card>
+      </main>
+    </div>
+  )
+}
