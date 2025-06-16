@@ -1,27 +1,36 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
-import dynamic from "next/dynamic"
-
-// Dynamic import to avoid SSR issues
-const PersonaBuilderApp = dynamic(() => import("@/components/persona/persona-builder-app"), {
-  ssr: false,
-  loading: () => (
-    <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
-    </div>
-  ),
-})
+import Hero from "@/components/persona/hero"
+import SignupForm from "@/components/persona/signup-form"
+import PersonaCreator from "@/components/persona/persona-creator"
+import PersonaInsights from "@/components/persona/persona-insights"
+import FeatureHighlights from "@/components/persona/feature-highlights"
+import Testimonials from "@/components/persona/testimonials"
+import CallToAction from "@/components/persona/call-to-action"
 
 export const metadata: Metadata = {
-  title: "Persona Builder | Bildur",
-  description: "Create detailed customer personas with our step-by-step builder",
+  title: "Customer Persona Generator | Bildur",
+  description:
+    "Create comprehensive psychological customer personas to better understand and target your ideal customers.",
 }
 
-function PersonaBuilderContent() {
-  return <PersonaBuilderApp />
+function PersonaContent() {
+  return (
+    <div className="flex flex-col min-h-screen bg-black">
+      <Hero />
+      <main className="flex-1">
+        <SignupForm />
+        <PersonaCreator />
+        <PersonaInsights />
+        <FeatureHighlights />
+        <Testimonials />
+        <CallToAction />
+      </main>
+    </div>
+  )
 }
 
-export default function PersonaBuilderPage() {
+export default function PersonaPage() {
   return (
     <Suspense
       fallback={
@@ -30,7 +39,7 @@ export default function PersonaBuilderPage() {
         </div>
       }
     >
-      <PersonaBuilderContent />
+      <PersonaContent />
     </Suspense>
   )
 }
