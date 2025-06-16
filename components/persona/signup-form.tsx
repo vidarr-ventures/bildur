@@ -3,11 +3,12 @@
 import type React from "react"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Loader2, Mail, User, Lock, CheckCircle } from "lucide-react"
+import { Loader2, Mail, User, Lock, CheckCircle } from 'lucide-react'
 
 export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -15,6 +16,7 @@ export default function SignupForm() {
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
   const [password, setPassword] = useState("")
+  const router = useRouter()
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,12 +30,9 @@ export default function SignupForm() {
       localStorage.setItem("demo-auth", "true")
       localStorage.setItem("demo-user", JSON.stringify({ name, email }))
 
-      // Scroll to persona creator section after success
+      // Redirect to persona builder after success
       setTimeout(() => {
-        const personaCreator = document.getElementById("persona-creator")
-        if (personaCreator) {
-          personaCreator.scrollIntoView({ behavior: "smooth" })
-        }
+        router.push("/persona/builder")
       }, 1500)
     }, 2000)
   }
@@ -53,12 +52,9 @@ export default function SignupForm() {
         }),
       )
 
-      // Scroll to persona creator section after success
+      // Redirect to persona builder after success
       setTimeout(() => {
-        const personaCreator = document.getElementById("persona-creator")
-        if (personaCreator) {
-          personaCreator.scrollIntoView({ behavior: "smooth" })
-        }
+        router.push("/persona/builder")
       }, 1500)
     }, 1000)
   }
@@ -75,26 +71,16 @@ export default function SignupForm() {
                 </div>
                 <CardTitle className="text-2xl text-center text-white">Account Created!</CardTitle>
                 <CardDescription className="text-center text-gray-400">
-                  Welcome to Bildur! You can now start building customer personas.
+                  Welcome to Bildur! Redirecting you to the persona builder...
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="text-center">
                   <p className="text-green-400 mb-4">✓ Account successfully created</p>
-                  <p className="text-gray-300 text-sm mb-4">
-                    Scroll down to access the persona builder or explore our features.
-                  </p>
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      const personaCreator = document.getElementById("persona-creator")
-                      if (personaCreator) {
-                        personaCreator.scrollIntoView({ behavior: "smooth" })
-                      }
-                    }}
-                  >
-                    Start Building Personas
-                  </Button>
+                  <div className="flex items-center justify-center">
+                    <Loader2 className="h-6 w-6 animate-spin text-purple-500" />
+                    <span className="ml-2 text-gray-300">Taking you to the persona builder...</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
