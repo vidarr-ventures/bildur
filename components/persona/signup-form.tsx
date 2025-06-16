@@ -25,7 +25,7 @@ export default function SignupForm() {
       localStorage.setItem("demo-user", JSON.stringify({ name, email }))
 
       // Redirect to persona creator section
-      window.location.href = "/persona#persona-creator"
+      window.location.href = "/persona-app/customer-research-form"
       setIsLoading(false)
     }, 1000)
   }
