@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
 import Hero from "@/components/persona/hero"
+import SignupForm from "@/components/persona/signup-form"
 import PersonaCreator from "@/components/persona/persona-creator"
 import PersonaInsights from "@/components/persona/persona-insights"
 import FeatureHighlights from "@/components/persona/feature-highlights"
@@ -15,9 +16,10 @@ export const metadata: Metadata = {
 
 function PersonaContent() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-black">
       <Hero />
       <main className="flex-1">
+        <SignupForm />
         <PersonaCreator />
         <PersonaInsights />
         <FeatureHighlights />
