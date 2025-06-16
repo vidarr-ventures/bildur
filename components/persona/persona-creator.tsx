@@ -12,7 +12,8 @@ export default function PersonaCreator() {
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">Interactive Persona Builder</h2>
             <p className="max-w-[900px] text-gray-200 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Our advanced persona builder uses psychological frameworks to create comprehensive customer profiles
+              Our AI-powered research tool analyzes your website and keywords to create comprehensive customer personas
+              automatically
             </p>
           </div>
         </div>
@@ -41,7 +42,7 @@ export default function PersonaCreator() {
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" asChild>
-                <Link href="/persona/builder">Launch Builder</Link>
+                <Link href="/persona-app/customer-research-form">Launch Research Form</Link>
               </Button>
               <Button variant="outline" size="lg" className="border-gray-600 text-gray-200 hover:bg-gray-800" asChild>
                 <Link href="mailto:ben@vidarrventures.com">Get Enterprise Access</Link>
@@ -63,15 +64,15 @@ export default function PersonaCreator() {
                 <div className="space-y-2">
                   <h4 className="font-semibold text-white">Features Available:</h4>
                   <ul className="space-y-1 text-sm text-gray-200">
-                    <li>• Multi-step persona creation</li>
-                    <li>• Psychological assessment tools</li>
-                    <li>• Visual persona cards</li>
+                    <li>• Website & keyword analysis</li>
+                    <li>• AI-powered persona generation</li>
+                    <li>• Comprehensive research reports</li>
                     <li>• Export and sharing options</li>
-                    <li>• Team collaboration</li>
+                    <li>• Amazon product integration</li>
                   </ul>
                 </div>
                 <Button className="w-full" asChild>
-                  <Link href="/persona/builder">Access Full Builder →</Link>
+                  <Link href="/persona-app/customer-research-form">Access Research Form →</Link>
                 </Button>
               </CardContent>
             </Card>
