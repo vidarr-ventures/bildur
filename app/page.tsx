@@ -1,4 +1,4 @@
-import { ArrowRight, Users, BarChart3, Brain } from "lucide-react"
+import { ArrowRight, Users, BarChart3, Brain } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -23,16 +23,10 @@ export default function Home() {
             </div>
             <div className="space-x-4">
               <a
-                href="/persona"
+                href="/persona#signup"
                 className="inline-flex h-9 items-center justify-center rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-purple-700"
               >
                 Try Persona Builder
-              </a>
-              <a
-                href="/about"
-                className="inline-flex h-9 items-center justify-center rounded-md border border-gray-700 bg-transparent px-4 py-2 text-sm font-medium text-gray-300 shadow-sm transition-colors hover:bg-gray-800"
-              >
-                Learn More
               </a>
             </div>
           </div>
