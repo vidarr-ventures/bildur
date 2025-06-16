@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Loader2, Mail, User, Lock } from "lucide-react"
+import { Loader2, Mail, User, Lock, CheckCircle } from "lucide-react"
 
 export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
   const [password, setPassword] = useState("")
@@ -21,21 +22,86 @@ export default function SignupForm() {
 
     // Simulate account creation
     setTimeout(() => {
-      // Redirect to persona builder with user data
-      const builderUrl = `https://persona-2411j1010-vidarr-ventures-42e9986b.vercel.app?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&signup=true`
-      window.open(builderUrl, "_blank")
       setIsLoading(false)
+      setIsSuccess(true)
+      // Store demo auth state
+      localStorage.setItem("demo-auth", "true")
+      localStorage.setItem("demo-user", JSON.stringify({ name, email }))
+
+      // Scroll to persona creator section after success
+      setTimeout(() => {
+        const personaCreator = document.getElementById("persona-creator")
+        if (personaCreator) {
+          personaCreator.scrollIntoView({ behavior: "smooth" })
+        }
+      }, 1500)
     }, 2000)
   }
 
   const handleGoogleSignup = () => {
     setIsLoading(true)
-    // Redirect to persona builder with Google auth
+    // Simulate Google auth
     setTimeout(() => {
-      const builderUrl = `https://persona-2411j1010-vidarr-ventures-42e9986b.vercel.app?auth=google&signup=true`
-      window.open(builderUrl, "_blank")
       setIsLoading(false)
+      setIsSuccess(true)
+      localStorage.setItem("demo-auth", "true")
+      localStorage.setItem(
+        "demo-user",
+        JSON.stringify({
+          name: "Demo User",
+          email: "demo@example.com",
+        }),
+      )
+
+      // Scroll to persona creator section after success
+      setTimeout(() => {
+        const personaCreator = document.getElementById("persona-creator")
+        if (personaCreator) {
+          personaCreator.scrollIntoView({ behavior: "smooth" })
+        }
+      }, 1500)
     }, 1000)
+  }
+
+  if (isSuccess) {
+    return (
+      <section id="signup" className="w-full py-12 md:py-24 lg:py-32 bg-gray-950">
+        <div className="container px-4 md:px-6">
+          <div className="mx-auto max-w-md">
+            <Card className="border-green-800 bg-gray-900">
+              <CardHeader className="space-y-1">
+                <div className="flex items-center justify-center mb-4">
+                  <CheckCircle className="h-12 w-12 text-green-500" />
+                </div>
+                <CardTitle className="text-2xl text-center text-white">Account Created!</CardTitle>
+                <CardDescription className="text-center text-gray-400">
+                  Welcome to Bildur! You can now start building customer personas.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-center">
+                  <p className="text-green-400 mb-4">✓ Account successfully created</p>
+                  <p className="text-gray-300 text-sm mb-4">
+                    Scroll down to access the persona builder or explore our features.
+                  </p>
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      const personaCreator = document.getElementById("persona-creator")
+                      if (personaCreator) {
+                        personaCreator.scrollIntoView({ behavior: "smooth" })
+                      }
+                    }}
+                  >
+                    Start Building Personas
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+    )
   }
 
   return (
