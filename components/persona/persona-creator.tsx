@@ -41,9 +41,7 @@ export default function PersonaCreator() {
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" asChild>
-                <Link href="https://persona-2411j1010-vidarr-ventures-42e9986b.vercel.app" target="_blank">
-                  Launch Builder
-                </Link>
+                <Link href="/persona/builder">Launch Builder</Link>
               </Button>
               <Button variant="outline" size="lg" className="border-gray-600 text-gray-200 hover:bg-gray-800" asChild>
                 <Link href="mailto:ben@vidarrventures.com">Get Enterprise Access</Link>
@@ -73,9 +71,7 @@ export default function PersonaCreator() {
                   </ul>
                 </div>
                 <Button className="w-full" asChild>
-                  <Link href="https://persona-2411j1010-vidarr-ventures-42e9986b.vercel.app" target="_blank">
-                    Access Full Builder →
-                  </Link>
+                  <Link href="/persona/builder">Access Full Builder →</Link>
                 </Button>
               </CardContent>
             </Card>
