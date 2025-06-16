@@ -1,6 +1,3 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-
 export default function Hero() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-purple-900 to-blue-900">
@@ -15,13 +12,13 @@ export default function Hero() {
               conversion rates.
             </p>
           </div>
-          <div className="flex flex-col gap-2 min-[400px]:flex-row">
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-white/90" asChild>
-              <Link href="#signup">Get Started Free</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20" asChild>
-              <Link href="mailto:ben@vidarrventures.com">Contact Us for Pricing</Link>
-            </Button>
+          <div className="flex justify-center">
+            <a
+              href="#signup"
+              className="inline-flex h-11 items-center justify-center rounded-md bg-white px-8 py-2 text-lg font-semibold text-purple-600 shadow transition-colors hover:bg-white/90"
+            >
+              Build a Persona Now
+            </a>
           </div>
         </div>
       </div>
