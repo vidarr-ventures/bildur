@@ -7,7 +7,7 @@ export default function Testimonials() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">What Our Users Say</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">What Our Users Say</h2>
             <p className="max-w-[900px] text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Hear from marketing professionals who have transformed their strategies with our persona tool
             </p>
@@ -22,7 +22,7 @@ export default function Testimonials() {
                   <AvatarFallback>SJ</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium">Sarah Johnson</p>
+                  <p className="text-sm font-medium text-white">Sarah Johnson</p>
                   <p className="text-sm text-gray-400">Marketing Director, TechCorp</p>
                 </div>
               </div>
@@ -58,7 +58,7 @@ export default function Testimonials() {
                   <AvatarFallback>MC</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium">Michael Chen</p>
+                  <p className="text-sm font-medium text-white">Michael Chen</p>
                   <p className="text-sm text-gray-400">Product Manager, SaaS Inc.</p>
                 </div>
               </div>
@@ -94,7 +94,7 @@ export default function Testimonials() {
                   <AvatarFallback>ER</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium">Emily Rodriguez</p>
+                  <p className="text-sm font-medium text-white">Emily Rodriguez</p>
                   <p className="text-sm text-gray-400">CMO, GrowthStartup</p>
                 </div>
               </div>
