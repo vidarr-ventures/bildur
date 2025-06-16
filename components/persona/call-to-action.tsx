@@ -17,9 +17,7 @@ export default function CallToAction() {
           </div>
           <div className="flex flex-col gap-2 min-[400px]:flex-row">
             <Button size="lg" className="bg-white text-purple-600 hover:bg-white/90" asChild>
-              <Link href="https://persona-2411j1010-vidarr-ventures-42e9986b.vercel.app" target="_blank">
-                Start Building Personas
-              </Link>
+              <Link href="/persona/builder">Start Building Personas</Link>
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20" asChild>
               <Link href="mailto:ben@vidarrventures.com">Contact Us for Pricing</Link>
