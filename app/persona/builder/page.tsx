@@ -1,11 +1,16 @@
-import type { Metadata } from "next"
+"use client"
 import { Suspense } from "react"
-import PersonaBuilderApp from "@/components/persona/persona-builder-app"
+import dynamic from "next/dynamic"
 
-export const metadata: Metadata = {
-  title: "Persona Builder | Bildur",
-  description: "Create detailed customer personas with our step-by-step builder",
-}
+// Dynamic import to avoid SSR issues - now in client component
+const PersonaBuilderApp = dynamic(() => import("@/components/persona/persona-builder-app"), {
+  ssr: false,
+  loading: () => (
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+    </div>
+  ),
+})
 
 function PersonaBuilderContent() {
   return <PersonaBuilderApp />
