@@ -14,6 +14,7 @@ interface ResearchStatus {
   progress: number
   currentTask: string
   message: string
+  errorDetails?: string
 }
 
 export default function CustomerResearchForm() {
@@ -31,14 +32,12 @@ export default function CustomerResearchForm() {
   // Safe URL parsing function
   const parseUrl = (url: string): string => {
     try {
-      // Add protocol if missing
       if (!url.startsWith("http://") && !url.startsWith("https://")) {
         url = "https://" + url
       }
       const parsedUrl = new URL(url)
       return parsedUrl.hostname
     } catch {
-      // Fallback if URL parsing fails
       return url.replace(/^https?:\/\//, "").split("/")[0] || "www.bildur.ai"
     }
   }
@@ -64,32 +63,69 @@ export default function CustomerResearchForm() {
         apiUrl = "https://" + apiUrl
       }
 
-      // Call your existing API endpoint
+      // Format the request to match your persona generation API
+      const requestBody = {
+        website: apiUrl,
+        // Add other common parameters that persona generation might need
+        jobType: "customer-research",
+        analysisType: "full",
+        // You might need to add user email or other required fields here
+        // email: "user@example.com", // if required
+      }
+
+      console.log("Making API call to /api/jobs/create-v2 with:", requestBody)
+
       const response = await fetch("/api/jobs/create-v2", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          // Add any other headers your API might need
+          // "Authorization": `Bearer ${token}`, // if auth is required
         },
-        body: JSON.stringify({
-          url: apiUrl,
-          // Add any other parameters your API expects
-        }),
+        body: JSON.stringify(requestBody),
       })
 
+      console.log("API Response status:", response.status)
+      console.log("API Response headers:", Object.fromEntries(response.headers.entries()))
+
+      // Get response text first to handle both JSON and non-JSON responses
+      const responseText = await response.text()
+      console.log("API Response body:", responseText)
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`)
+        let errorMessage = `HTTP ${response.status}: ${response.statusText}`
+
+        try {
+          const errorData = JSON.parse(responseText)
+          errorMessage = errorData.message || errorData.error || errorMessage
+        } catch {
+          // If not JSON, use the text as is
+          if (responseText) errorMessage = responseText
+        }
+
+        throw new Error(errorMessage)
       }
 
-      const result = await response.json()
-      console.log("Research job created:", result)
-
-      // Store job ID for potential status checking
-      if (result.jobId || result.id) {
-        setJobId(result.jobId || result.id)
+      // Parse the successful response
+      let result
+      try {
+        result = JSON.parse(responseText)
+      } catch {
+        result = { message: "Job created successfully", response: responseText }
       }
 
-      // Step 1: Data collection started
+      console.log("Research job created successfully:", result)
+
+      // Store job ID - check common field names
+      const possibleJobIdFields = ["jobId", "id", "job_id", "taskId", "requestId"]
+      for (const field of possibleJobIdFields) {
+        if (result[field]) {
+          setJobId(result[field])
+          break
+        }
+      }
+
+      // Continue with the research flow
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       setResearchStatus({
@@ -99,7 +135,6 @@ export default function CustomerResearchForm() {
         message: "Collecting data from your website",
       })
 
-      // Step 2: Processing data
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
       setResearchStatus({
@@ -109,7 +144,6 @@ export default function CustomerResearchForm() {
         message: "Analyzing website content",
       })
 
-      // Step 3: AI Analysis
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
       setResearchStatus({
@@ -119,7 +153,6 @@ export default function CustomerResearchForm() {
         message: "AI analysis in progress",
       })
 
-      // Step 4: Complete
       await new Promise((resolve) => setTimeout(resolve, 3000))
 
       setResearchStatus({
@@ -130,11 +163,14 @@ export default function CustomerResearchForm() {
       })
     } catch (error) {
       console.error("Research failed:", error)
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred"
+
       setResearchStatus({
         status: "error",
         progress: 0,
-        currentTask: error instanceof Error ? error.message : "Research failed. Please try again.",
+        currentTask: "Research failed",
         message: "An error occurred during research",
+        errorDetails: errorMessage,
       })
     } finally {
       setIsResearching(false)
@@ -144,7 +180,6 @@ export default function CustomerResearchForm() {
   const handleCloseModal = () => {
     setShowModal(false)
     if (researchStatus.status === "complete") {
-      // Reset form or redirect to results
       setWebsiteUrl("")
       setJobId(null)
     }
@@ -226,10 +261,15 @@ export default function CustomerResearchForm() {
             <div className="text-center space-y-2">
               <p className="text-lg font-medium">{researchStatus.message}</p>
               {researchStatus.currentTask && <p className="text-sm text-gray-400">{researchStatus.currentTask}</p>}
+              {researchStatus.errorDetails && (
+                <div className="text-xs text-red-400 bg-red-900/20 p-2 rounded max-w-sm">
+                  <p className="font-medium mb-1">Error Details:</p>
+                  <p className="break-words">{researchStatus.errorDetails}</p>
+                </div>
+              )}
               {jobId && <p className="text-xs text-gray-500">Job ID: {jobId}</p>}
             </div>
 
-            {/* Progress bar - only show when processing */}
             {isProcessing && (
               <div className="w-full space-y-2">
                 <Progress value={researchStatus.progress} className="w-full" />
