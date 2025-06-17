@@ -28,6 +28,21 @@ export default function CustomerResearchForm() {
     message: "",
   })
 
+  // Safe URL parsing function
+  const parseUrl = (url: string): string => {
+    try {
+      // Add protocol if missing
+      if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = "https://" + url
+      }
+      const parsedUrl = new URL(url)
+      return parsedUrl.hostname
+    } catch {
+      // Fallback if URL parsing fails
+      return url.replace(/^https?:\/\//, "").split("/")[0] || "www.bildur.ai"
+    }
+  }
+
   const startResearch = async () => {
     if (!websiteUrl.trim()) return
 
@@ -43,18 +58,27 @@ export default function CustomerResearchForm() {
     })
 
     try {
+      // Prepare the URL for API call
+      let apiUrl = websiteUrl.trim()
+      if (!apiUrl.startsWith("http://") && !apiUrl.startsWith("https://")) {
+        apiUrl = "https://" + apiUrl
+      }
+
       // Call your existing API endpoint
       const response = await fetch("/api/jobs/create-v2", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          url: websiteUrl,
-          type: "customer-research", // or whatever type your API expects
+          url: apiUrl,
+          // Add any other parameters your API expects
         }),
       })
 
       if (!response.ok) {
-        throw new Error("Failed to start research")
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`)
       }
 
       const result = await response.json()
@@ -109,7 +133,7 @@ export default function CustomerResearchForm() {
       setResearchStatus({
         status: "error",
         progress: 0,
-        currentTask: "Research failed. Please try again.",
+        currentTask: error instanceof Error ? error.message : "Research failed. Please try again.",
         message: "An error occurred during research",
       })
     } finally {
@@ -167,12 +191,13 @@ export default function CustomerResearchForm() {
             <Label htmlFor="website-url">Website URL</Label>
             <Input
               id="website-url"
-              type="url"
-              placeholder="https://example.com"
+              type="text"
+              placeholder="example.com or https://example.com"
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
               disabled={isResearching}
             />
+            <p className="text-xs text-gray-500">Enter a website URL (with or without https://)</p>
           </div>
 
           <Button onClick={startResearch} disabled={!websiteUrl.trim() || isResearching} className="w-full" size="lg">
@@ -192,9 +217,7 @@ export default function CustomerResearchForm() {
       <Dialog open={showModal} onOpenChange={handleCloseModal}>
         <DialogContent className="sm:max-w-md bg-gray-900 text-white border-gray-700">
           <DialogHeader>
-            <DialogTitle className="text-center">
-              {websiteUrl ? new URL(websiteUrl).hostname : "www.bildur.ai"} says
-            </DialogTitle>
+            <DialogTitle className="text-center">{parseUrl(websiteUrl)} says</DialogTitle>
           </DialogHeader>
 
           <div className="flex flex-col items-center space-y-4 py-4">
