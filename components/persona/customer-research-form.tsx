@@ -20,6 +20,7 @@ export default function CustomerResearchForm() {
   const [websiteUrl, setWebsiteUrl] = useState("")
   const [isResearching, setIsResearching] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [jobId, setJobId] = useState<string | null>(null)
   const [researchStatus, setResearchStatus] = useState<ResearchStatus>({
     status: "idle",
     progress: 0,
@@ -42,7 +43,29 @@ export default function CustomerResearchForm() {
     })
 
     try {
-      // Step 1: Start data collection
+      // Call your existing API endpoint
+      const response = await fetch("/api/jobs/create-v2", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: websiteUrl,
+          type: "customer-research", // or whatever type your API expects
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to start research")
+      }
+
+      const result = await response.json()
+      console.log("Research job created:", result)
+
+      // Store job ID for potential status checking
+      if (result.jobId || result.id) {
+        setJobId(result.jobId || result.id)
+      }
+
+      // Step 1: Data collection started
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       setResearchStatus({
@@ -51,20 +74,6 @@ export default function CustomerResearchForm() {
         currentTask: "Crawling website and collecting data...",
         message: "Collecting data from your website",
       })
-
-      // Call your actual API endpoint
-      const response = await fetch("/api/research/start", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: websiteUrl }),
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to start research")
-      }
-
-      const result = await response.json()
-      console.log("Research started:", result)
 
       // Step 2: Processing data
       await new Promise((resolve) => setTimeout(resolve, 2000))
@@ -113,6 +122,7 @@ export default function CustomerResearchForm() {
     if (researchStatus.status === "complete") {
       // Reset form or redirect to results
       setWebsiteUrl("")
+      setJobId(null)
     }
     setResearchStatus({
       status: "idle",
@@ -183,7 +193,7 @@ export default function CustomerResearchForm() {
         <DialogContent className="sm:max-w-md bg-gray-900 text-white border-gray-700">
           <DialogHeader>
             <DialogTitle className="text-center">
-              {new URL(websiteUrl || "https://example.com").hostname} says
+              {websiteUrl ? new URL(websiteUrl).hostname : "www.bildur.ai"} says
             </DialogTitle>
           </DialogHeader>
 
@@ -193,6 +203,7 @@ export default function CustomerResearchForm() {
             <div className="text-center space-y-2">
               <p className="text-lg font-medium">{researchStatus.message}</p>
               {researchStatus.currentTask && <p className="text-sm text-gray-400">{researchStatus.currentTask}</p>}
+              {jobId && <p className="text-xs text-gray-500">Job ID: {jobId}</p>}
             </div>
 
             {/* Progress bar - only show when processing */}
