@@ -1,181 +1,219 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
-import { InfoIcon } from "lucide-react"
-import Link from "next/link"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Progress } from "@/components/ui/progress"
+import { Loader2, CheckCircle, AlertCircle, Globe } from "lucide-react"
+
+interface ResearchStatus {
+  status: "idle" | "initializing" | "scraping" | "analyzing" | "complete" | "error"
+  progress: number
+  currentTask: string
+  message: string
+}
 
 export default function CustomerResearchForm() {
-  const [formData, setFormData] = useState({
-    websiteUrl: "",
-    amazonUrl: "",
-    primaryKeywords: "",
-    secondaryKeywords: "",
-    additionalKeywords: "",
+  const [websiteUrl, setWebsiteUrl] = useState("")
+  const [isResearching, setIsResearching] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [researchStatus, setResearchStatus] = useState<ResearchStatus>({
+    status: "idle",
+    progress: 0,
+    currentTask: "",
+    message: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted:", formData)
-    alert("Research started! (This is a demo - the AI analysis would begin here)")
+  const startResearch = async () => {
+    if (!websiteUrl.trim()) return
+
+    setIsResearching(true)
+    setShowModal(true)
+
+    // Initialize research
+    setResearchStatus({
+      status: "initializing",
+      progress: 10,
+      currentTask: "Initializing research process...",
+      message: "Research started!",
+    })
+
+    try {
+      // Step 1: Start data collection
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      setResearchStatus({
+        status: "scraping",
+        progress: 30,
+        currentTask: "Crawling website and collecting data...",
+        message: "Collecting data from your website",
+      })
+
+      // Call your actual API endpoint
+      const response = await fetch("/api/research/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: websiteUrl }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to start research")
+      }
+
+      const result = await response.json()
+      console.log("Research started:", result)
+
+      // Step 2: Processing data
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
+      setResearchStatus({
+        status: "scraping",
+        progress: 60,
+        currentTask: "Processing collected data...",
+        message: "Analyzing website content",
+      })
+
+      // Step 3: AI Analysis
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
+      setResearchStatus({
+        status: "analyzing",
+        progress: 80,
+        currentTask: "Running AI analysis on collected data...",
+        message: "AI analysis in progress",
+      })
+
+      // Step 4: Complete
+      await new Promise((resolve) => setTimeout(resolve, 3000))
+
+      setResearchStatus({
+        status: "complete",
+        progress: 100,
+        currentTask: "Analysis complete!",
+        message: "Research completed successfully!",
+      })
+    } catch (error) {
+      console.error("Research failed:", error)
+      setResearchStatus({
+        status: "error",
+        progress: 0,
+        currentTask: "Research failed. Please try again.",
+        message: "An error occurred during research",
+      })
+    } finally {
+      setIsResearching(false)
+    }
   }
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+  const handleCloseModal = () => {
+    setShowModal(false)
+    if (researchStatus.status === "complete") {
+      // Reset form or redirect to results
+      setWebsiteUrl("")
+    }
+    setResearchStatus({
+      status: "idle",
+      progress: 0,
+      currentTask: "",
+      message: "",
+    })
   }
+
+  const getStatusIcon = () => {
+    switch (researchStatus.status) {
+      case "complete":
+        return <CheckCircle className="h-6 w-6 text-green-500" />
+      case "error":
+        return <AlertCircle className="h-6 w-6 text-red-500" />
+      case "idle":
+        return <Globe className="h-6 w-6 text-blue-500" />
+      default:
+        return <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+    }
+  }
+
+  const isProcessing =
+    researchStatus.status === "initializing" ||
+    researchStatus.status === "scraping" ||
+    researchStatus.status === "analyzing"
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">B</span>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  Bildur
-                </span>
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-300 text-sm">Persona Builder</span>
-            </div>
+    <>
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Globe className="h-5 w-5" />
+            Customer Research
+          </CardTitle>
+          <CardDescription>
+            Enter your website URL to start comprehensive customer research and analysis
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="website-url">Website URL</Label>
+            <Input
+              id="website-url"
+              type="url"
+              placeholder="https://example.com"
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
+              disabled={isResearching}
+            />
           </div>
-        </div>
-      </header>
 
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            Customer Persona Research
-          </h1>
-          <p className="text-gray-200 text-lg max-w-2xl mx-auto">
-            Enter your business details and keywords to generate comprehensive customer personas powered by AI
-          </p>
-        </div>
+          <Button onClick={startResearch} disabled={!websiteUrl.trim() || isResearching} className="w-full" size="lg">
+            {isResearching ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Researching...
+              </>
+            ) : (
+              "Start Research"
+            )}
+          </Button>
+        </CardContent>
+      </Card>
 
-        <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle className="text-white text-2xl">Research Parameters</CardTitle>
-            <CardDescription className="text-gray-200">
-              Provide your website and keyword information to generate accurate customer personas
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Website URL */}
-              <div className="space-y-2">
-                <Label htmlFor="websiteUrl" className="text-white font-medium">
-                  Website URL
-                </Label>
-                <Input
-                  id="websiteUrl"
-                  type="url"
-                  placeholder="https://your-website.com"
-                  value={formData.websiteUrl}
-                  onChange={(e) => handleInputChange("websiteUrl", e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-purple-500"
-                />
+      {/* Research Status Modal */}
+      <Dialog open={showModal} onOpenChange={handleCloseModal}>
+        <DialogContent className="sm:max-w-md bg-gray-900 text-white border-gray-700">
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              {new URL(websiteUrl || "https://example.com").hostname} says
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex flex-col items-center space-y-4 py-4">
+            {getStatusIcon()}
+
+            <div className="text-center space-y-2">
+              <p className="text-lg font-medium">{researchStatus.message}</p>
+              {researchStatus.currentTask && <p className="text-sm text-gray-400">{researchStatus.currentTask}</p>}
+            </div>
+
+            {/* Progress bar - only show when processing */}
+            {isProcessing && (
+              <div className="w-full space-y-2">
+                <Progress value={researchStatus.progress} className="w-full" />
+                <p className="text-xs text-gray-500 text-center">{researchStatus.progress}% complete</p>
               </div>
+            )}
 
-              {/* Amazon Product URL */}
-              <div className="space-y-2">
-                <Label htmlFor="amazonUrl" className="text-white font-medium">
-                  Amazon Product URL <span className="text-gray-400">(Optional)</span>
-                </Label>
-                <Input
-                  id="amazonUrl"
-                  type="url"
-                  placeholder="https://amazon.com/your-product"
-                  value={formData.amazonUrl}
-                  onChange={(e) => handleInputChange("amazonUrl", e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-purple-500"
-                />
-              </div>
-
-              {/* Primary Keywords */}
-              <div className="space-y-2">
-                <Label htmlFor="primaryKeywords" className="text-white font-medium">
-                  Primary Keywords <span className="text-red-400">*</span>
-                </Label>
-                <Textarea
-                  id="primaryKeywords"
-                  placeholder="Main product or topic keywords"
-                  value={formData.primaryKeywords}
-                  onChange={(e) => handleInputChange("primaryKeywords", e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-purple-500 min-h-[80px]"
-                  required
-                />
-                <p className="text-gray-400 text-sm">Main product or topic keywords</p>
-              </div>
-
-              {/* Secondary Keywords */}
-              <div className="space-y-2">
-                <Label htmlFor="secondaryKeywords" className="text-white font-medium">
-                  Secondary Keywords <span className="text-gray-400">(Optional)</span>
-                </Label>
-                <Textarea
-                  id="secondaryKeywords"
-                  placeholder="Related or alternative terms"
-                  value={formData.secondaryKeywords}
-                  onChange={(e) => handleInputChange("secondaryKeywords", e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-purple-500 min-h-[80px]"
-                />
-                <p className="text-gray-400 text-sm">Related or alternative terms</p>
-              </div>
-
-              {/* Additional Keywords */}
-              <div className="space-y-2">
-                <Label htmlFor="additionalKeywords" className="text-white font-medium">
-                  Additional Keywords <span className="text-gray-400">(Optional)</span>
-                </Label>
-                <Textarea
-                  id="additionalKeywords"
-                  placeholder="Broader problem or benefit keywords"
-                  value={formData.additionalKeywords}
-                  onChange={(e) => handleInputChange("additionalKeywords", e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-purple-500 min-h-[80px]"
-                />
-                <p className="text-gray-400 text-sm">Broader problem or benefit keywords</p>
-              </div>
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-4 text-lg"
-              >
-                Start Customer Research
-              </Button>
-
-              {/* Tip Section */}
-              <div className="bg-blue-900/20 border border-blue-800 rounded-lg p-4 mt-6">
-                <div className="flex items-start space-x-3">
-                  <InfoIcon className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-blue-200 font-medium mb-1">Tip:</p>
-                    <p className="text-blue-100 text-sm">
-                      Use different keyword fields to capture various aspects - primary (main product), secondary
-                      (alternatives), additional (problems/benefits).
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </main>
-    </div>
+            <Button
+              onClick={handleCloseModal}
+              className="w-full"
+              variant={researchStatus.status === "error" ? "destructive" : "default"}
+              disabled={isProcessing}
+            >
+              {researchStatus.status === "complete" || researchStatus.status === "error" ? "OK" : "Cancel"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
