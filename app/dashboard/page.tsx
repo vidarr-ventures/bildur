@@ -1,183 +1,246 @@
-import type { Metadata } from "next"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CalendarDays, Download, Plus, Share2, Users } from "lucide-react"
+'use client';
 
-export const metadata: Metadata = {
-  title: "Dashboard | Customer Persona Generator",
-  description: "Manage your customer personas",
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { CheckCircle, Clock, XCircle, AlertCircle, ExternalLink } from 'lucide-react';
+
+interface JobStatus {
+  id: string;
+  status: string;
+  progress: number;
+  created_at: string;
+  completed_at?: string;
+  user_inputs?: any;
 }
 
 export default function DashboardPage() {
-  return (
-    <div className="flex min-h-screen w-full flex-col">
-      <header className="sticky top-0 z-30 flex h-16 w-full items-center border-b bg-background px-4 md:px-6">
-        <div className="flex items-center gap-2 font-semibold">
-          <Users className="h-6 w-6" />
-          <span>Customer Persona Generator</span>
-        </div>
-        <nav className="ml-auto flex items-center gap-4">
-          <Button variant="outline" size="sm">
-            <Share2 className="mr-2 h-4 w-4" />
-            Share
-          </Button>
-          <Button size="sm">
-            <Plus className="mr-2 h-4 w-4" />
-            New Persona
-          </Button>
-        </nav>
-      </header>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-          <Button variant="outline" size="sm" className="ml-auto">
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-        </div>
-        <Tabs defaultValue="personas">
-          <TabsList>
-            <TabsTrigger value="personas">Personas</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
-          <TabsContent value="personas" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="overflow-hidden">
-                <CardHeader className="p-4 bg-gradient-to-r from-purple-500 to-blue-500">
-                  <CardTitle className="text-white">Marketing Manager Melissa</CardTitle>
-                  <CardDescription className="text-white/80">B2B SaaS | 35-45 | Decision Maker</CardDescription>
-                </CardHeader>
-                <CardContent className="p-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Goals</h4>
-                      <ul className="mt-1 space-y-1 text-sm">
-                        <li>Increase marketing ROI</li>
-                        <li>Improve lead quality</li>
-                        <li>Streamline campaigns</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Pain Points</h4>
-                      <ul className="mt-1 space-y-1 text-sm">
-                        <li>Limited resources</li>
-                        <li>Proving marketing value</li>
-                        <li>Data silos</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Psychological Profile</h4>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/30">
-                        Analytical
-                      </span>
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold bg-green-50 text-green-600 border-green-100 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/30">
-                        Results-driven
-                      </span>
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold bg-purple-50 text-purple-600 border-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-900/30">
-                        Collaborative
-                      </span>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                    <div className="flex items-center">
-                      <CalendarDays className="mr-1 h-3 w-3" />
-                      <span>Updated 2 days ago</span>
-                    </div>
-                    <Button variant="ghost" size="sm">
-                      View
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="overflow-hidden">
-                <CardHeader className="p-4 bg-gradient-to-r from-blue-500 to-cyan-500">
-                  <CardTitle className="text-white">Tech Lead Thomas</CardTitle>
-                  <CardDescription className="text-white/80">Enterprise IT | 30-40 | Influencer</CardDescription>
-                </CardHeader>
-                <CardContent className="p-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Goals</h4>
-                      <ul className="mt-1 space-y-1 text-sm">
-                        <li>Improve system reliability</li>
-                        <li>Reduce technical debt</li>
-                        <li>Automate processes</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Pain Points</h4>
-                      <ul className="mt-1 space-y-1 text-sm">
-                        <li>Legacy systems</li>
-                        <li>Security concerns</li>
-                        <li>Resource constraints</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Psychological Profile</h4>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/30">
-                        Detail-oriented
-                      </span>
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-900/30">
-                        Pragmatic
-                      </span>
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold bg-red-50 text-red-600 border-red-100 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/30">
-                        Risk-averse
-                      </span>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                    <div className="flex items-center">
-                      <CalendarDays className="mr-1 h-3 w-3" />
-                      <span>Updated 1 week ago</span>
-                    </div>
-                    <Button variant="ghost" size="sm">
-                      View
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="overflow-hidden border-dashed border-2 flex flex-col items-center justify-center p-6">
-                <Plus className="h-8 w-8 text-gray-400 mb-2" />
-                <h3 className="font-medium">Create New Persona</h3>
-                <p className="text-sm text-gray-500 text-center mt-1">Add a new customer persona to your collection</p>
-                <Button className="mt-4">Get Started</Button>
-              </Card>
+  const params = useParams();
+  const jobId = params.jobId as string;
+  const [jobStatus, setJobStatus] = useState<JobStatus | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!jobId) return;
+
+    const fetchJobStatus = async () => {
+      try {
+        const response = await fetch(`/api/jobs/status/${jobId}`);
+        const data = await response.json();
+
+        if (data.success) {
+          setJobStatus(data.job);
+        } else {
+          setError('Failed to fetch job status');
+        }
+      } catch (err) {
+        setError('Failed to load job data');
+        console.error('Dashboard fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobStatus();
+    
+    // Poll for updates every 5 seconds if job is processing
+    const interval = setInterval(() => {
+      if (jobStatus?.status === 'processing') {
+        fetchJobStatus();
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [jobId, jobStatus?.status]);
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="h-8 w-8 text-green-400" />;
+      case 'processing':
+        return <Clock className="h-8 w-8 text-blue-400 animate-pulse" />;
+      case 'failed':
+        return <XCircle className="h-8 w-8 text-red-400" />;
+      default:
+        return <AlertCircle className="h-8 w-8 text-yellow-400" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'text-green-400';
+      case 'processing':
+        return 'text-blue-400';
+      case 'failed':
+        return 'text-red-400';
+      default:
+        return 'text-yellow-400';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gray-900 border border-gray-800 rounded-lg p-8">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto"></div>
+              <p className="mt-4 text-gray-300">Loading dashboard...</p>
             </div>
-          </TabsContent>
-          <TabsContent value="analytics" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Analytics</CardTitle>
-                <CardDescription>View insights about your customer personas</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px] flex items-center justify-center text-gray-500">
-                  Analytics dashboard coming soon
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !jobStatus) {
+    return (
+      <div className="min-h-screen bg-black py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gray-900 border border-gray-800 rounded-lg p-8">
+            <div className="text-center">
+              <XCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+              <div className="text-red-400 text-xl font-semibold mb-4">Dashboard Not Available</div>
+              <p className="text-gray-300 mb-6">{error}</p>
+              <Link 
+                href="/" 
+                className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                Create New Analysis
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-gray-900 border border-gray-800 rounded-lg p-8">
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              {getStatusIcon(jobStatus.status)}
+            </div>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Analysis Dashboard
+            </h1>
+            <p className="text-gray-400">
+              Job ID: {jobId}
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* Status Card */}
+            <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg">
+              <h2 className="text-xl font-semibold text-white mb-4">Job Status</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-gray-400">Status</p>
+                  <p className={`font-medium ${getStatusColor(jobStatus.status)}`}>
+                    {jobStatus.status.charAt(0).toUpperCase() + jobStatus.status.slice(1)}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="settings" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Settings</CardTitle>
-                <CardDescription>Manage your account and preferences</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px] flex items-center justify-center text-gray-500">
-                  Settings panel coming soon
+                <div>
+                  <p className="text-sm text-gray-400">Progress</p>
+                  <p className="font-medium text-white">{jobStatus.progress}%</p>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </main>
+                <div>
+                  <p className="text-sm text-gray-400">Created</p>
+                  <p className="font-medium text-white">{new Date(jobStatus.created_at).toLocaleString()}</p>
+                </div>
+                {jobStatus.completed_at && (
+                  <div>
+                    <p className="text-sm text-gray-400">Completed</p>
+                    <p className="font-medium text-white">{new Date(jobStatus.completed_at).toLocaleString()}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Analysis Parameters */}
+            {jobStatus.user_inputs && (
+              <div className="bg-gray-800 border border-gray-700 p-6 rounded-lg">
+                <h2 className="text-xl font-semibold text-white mb-4">Analysis Parameters</h2>
+                <div className="space-y-3">
+                  {jobStatus.user_inputs.primaryProductUrl && (
+                    <div>
+                      <p className="text-sm text-gray-400">Website URL</p>
+                      <div className="flex items-center space-x-2">
+                        <p className="font-medium text-white break-all">{jobStatus.user_inputs.primaryProductUrl}</p>
+                        <a 
+                          href={jobStatus.user_inputs.primaryProductUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-purple-400 hover:text-purple-300"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                  {jobStatus.user_inputs.amazonProductUrl && (
+                    <div>
+                      <p className="text-sm text-gray-400">Amazon Product URL</p>
+                      <div className="flex items-center space-x-2">
+                        <p className="font-medium text-white break-all">{jobStatus.user_inputs.amazonProductUrl}</p>
+                        <a 
+                          href={jobStatus.user_inputs.amazonProductUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-purple-400 hover:text-purple-300"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                  {jobStatus.user_inputs.targetKeywords && (
+                    <div>
+                      <p className="text-sm text-gray-400">Target Keywords</p>
+                      <p className="font-medium text-white">{jobStatus.user_inputs.targetKeywords}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Processing Message */}
+            {jobStatus.status === 'processing' && (
+              <div className="bg-blue-500/10 border border-blue-500/20 p-6 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <Clock className="h-6 w-6 text-blue-400 animate-pulse" />
+                  <div>
+                    <h3 className="text-lg font-semibold text-blue-400">Analysis in Progress</h3>
+                    <p className="text-blue-300">Your customer persona is being generated. This usually takes 2-5 minutes.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            {jobStatus.status === 'completed' && (
+              <Link 
+                href={`/report/${jobId}`}
+                className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium text-center"
+              >
+                View Persona Report
+              </Link>
+            )}
+            <Link 
+              href="/"
+              className="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors font-medium text-center"
+            >
+              Create New Analysis
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
